@@ -8,6 +8,7 @@ conda create -n delg
 conda activate delg
 conda install pip
 pip install 'tensorflow-gpu>=2.2.0'
+pip install tensorflow-object-detection-api
 git clone https://github.com/google-research/tf-slim.git
 cd tf-slim
 pip install .
@@ -30,6 +31,12 @@ python -c 'import delf'
 ```
 ---
 ## Run DELG
+### Prepare data
+Navigate to https://github.com/Shubodh/x-view-scratch/tree/master/utils.
+```bash
+#if data convention as described as before is followed, with mp3d data in ../data_collection/x-view/mp3d, then this will run without issues
+python create_dbow_db.py
+```
 ### Download model
 
 This is necessary to reproduce the main paper results. This example shows the
@@ -44,4 +51,12 @@ mkdir parameters && cd parameters
 # R50-DELG-GLD model.
 wget http://storage.googleapis.com/delf/r50delg_gld_20200814.tar.gz
 tar -xvzf r50delg_gld_20200814.tar.gz
+```
+## Extract features and perform retrieval
+This next part extracts features, performs retrieval and also displays accuracy
+```bash
+#change the directory path in line 75
+python extract_features_all_scenes.py --image_set query
+python extract_features_all_scenes.py --image_set index
+python perform_retrieval_all_scenes.py
 ```
